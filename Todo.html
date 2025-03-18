@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #f9f9f9;
+}
+
+.container {
+  width: 400px;
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.addBtn {
+  background: #4CAF50;
+  color: white;
+  width: 25%;
+}
+
+.addBtn:hover {
+  background: #45a049;
+}
+
+/* จัดปุ่มลบ 2 ปุ่มให้อยู่ในบรรทัดเดียวกัน */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.clearBtn {
+  background: #f44336;
+  color: white;
+  width: 48%;
+}
+
+.clearBtn1 {
+  background: #f0f0f0;
+  color: rgb(0, 0, 0);
+  width: 48%;
+}
+
+.clearBtn:hover {
+  background: #e53935;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+ul li {
+  display: flex;
+  justify-content: space-between;
+  background: #eee;
+  padding: 10px;
+  border-radius: 5px;
+  align-items: center;
+  margin-top: 5px;
+}
+
+ul li.checked {
+  text-decoration: line-through;
+  background: #d3d3d3;
+  color: gray;
+}
+
+/* ไอคอนเช็คถูก และ ย้อนกลับ */
+.checkIcon {
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: green;
+}
+
+.undoIcon {
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: blue;
+}
+
+.trashBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.trashBtn img {
+  width: 16px;
+  height: 16px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>To-Do List</h2>
+  <div class="btn-group">
+  <input type="text" id="myInput" placeholder="เพิ่มรายการใหม่...">
+  <button class="addBtn" onclick="newElement()">เพิ่ม</button>
+</div>
+  <ul id="myUL"></ul>
+
+  <div class="btn-group">
+    <button class="clearBtn1" onclick="removeCompleted()">ลบรายการที่เสร็จแล้ว</button>
+    <button class="clearBtn" onclick="clearList()">ลบทั้งหมด</button>
+  </div>
+</div>
+
+<script>
+function newElement() {
+  var inputValue = document.getElementById("myInput").value;
+  if (inputValue === '') {
+    alert("โปรดกรอกข้อมูล!");
+    return;
+  }
+
+  var li = document.createElement("li");
+
+  // ไอคอนเช็คถูก
+  var checkIcon = document.createElement("span");
+  checkIcon.innerHTML = "✔";
+  checkIcon.className = "checkIcon";
+  checkIcon.onclick = function() {
+    if (li.classList.contains("checked")) {
+      li.classList.remove("checked");
+      checkIcon.innerHTML = "✔";
+      checkIcon.className = "checkIcon";
+    } else {
+      li.classList.add("checked");
+      checkIcon.innerHTML = "🔄";
+      checkIcon.className = "undoIcon";
+    }
+  };
+
+  var text = document.createTextNode(inputValue);
+
+  var trashBtn = document.createElement("button");
+  trashBtn.className = "trashBtn";
+  trashBtn.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png">';
+  trashBtn.onclick = function() {
+    li.remove();
+  };
+
+  li.appendChild(checkIcon);
+  li.appendChild(text);
+  li.appendChild(trashBtn);
+  document.getElementById("myUL").appendChild(li);
+
+  document.getElementById("myInput").value = "";
+}
+
+function removeCompleted() {
+  var completedItems = document.querySelectorAll("#myUL li.checked");
+  completedItems.forEach(function(item) {
+    item.remove();
+  });
+}
+
+function clearList() {
+  document.getElementById("myUL").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
